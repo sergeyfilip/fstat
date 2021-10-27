@@ -28,6 +28,7 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
 pub fn stat (contents: &str) {
     
     let mut vect:Vec<&str> = Vec::new();
+    let mut vectlower:Vec<String> = Vec::new();
     let mut map = HashMap::new();
     
     for line in contents.lines() {
@@ -35,13 +36,17 @@ pub fn stat (contents: &str) {
         let split = line.split_whitespace();
         for s in split {
             let mut m = s;
+           // let mut m = &s.to_lowercase().as_str();
+            
             if value_have_bad_end(s) == true { m = rem_last(s); }
           //  println!("{}  - {}  -    {}", m , m.len(),s.chars().last().unwrap())
           vect.push(m);
+          vectlower.push(low(m));
         }
         
     }
-    for word in vect {
+    
+    for word in vectlower {
         let count = map.entry(word).or_insert(0);
         *count += 1;
     }
@@ -66,5 +71,11 @@ pub fn value_have_bad_end(value: &str) ->bool {
     if s == '!' { z = true; }
     if s == ';' { z = true; }
     z
+    
+}
+pub fn low(s: &str) -> String {
+ let st:String = String::from(s)   ;
+ let mut g = st.to_lowercase();
+ g
     
 }
