@@ -1,6 +1,7 @@
 use std::error::Error;
 use std::fs;
 use std::collections::HashMap;
+use std::collections::BTreeMap;
 
 pub struct Config {
     pub query: String,
@@ -29,8 +30,8 @@ pub fn stat (contents: &str) {
     
     let mut vect:Vec<&str> = Vec::new();
     let mut vectlower:Vec<String> = Vec::new();
-    let mut map = HashMap::new();
-    
+ //   let mut map = HashMap::new();
+    let mut tree = BTreeMap::new();
     for line in contents.lines() {
         
         let split = line.split_whitespace();
@@ -47,12 +48,14 @@ pub fn stat (contents: &str) {
     }
     
     for word in vectlower {
-        let count = map.entry(word).or_insert(0);
+        let count = tree.entry(word).or_insert(0);
         *count += 1;
     }
     
-    println!("{:?}", map);
-    
+  //  println!("{}", tree);
+    for (word, count) in &tree {
+        println!("{}: \"{}\"", word, count);
+    }
     
     
 }
@@ -70,6 +73,12 @@ pub fn value_have_bad_end(value: &str) ->bool {
     if s == '?' { z = true; }
     if s == '!' { z = true; }
     if s == ';' { z = true; }
+    if s == ':' { z = true; }
+    if s == '@' { z = true; }
+    if s == '*' { z = true; }
+    if s == '#' { z = true; }
+    if s == ')' { z = true; }
+    if s == '(' { z = true; }
     z
     
 }
